@@ -2,22 +2,19 @@
 
 {% block content %}
   {{ form.hidden_tag() }}
-  <h1>Register</h1>
+  <h1>Login</h1>
   <div>
     {{ form.email.label }}
     {{ form.email }}
   </div>
-  
   <div>
     {{ form.password.label }}
     {{ form.password }}
   </div>
-
   <div>
-    {{ form.password_confirm.label }}
-    {{ form.password_confirm }}
+    {{ form.staylogged.label }}
+    {{ form.staylogged }}
   </div>
-
   <div>
     {{ form.submit }}
   </div>
