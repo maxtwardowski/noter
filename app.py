@@ -20,11 +20,26 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     date_join = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    authenticated = db.Column(db.Boolean, default=False)
     #notes = db.relationship('Note', backref='author', lazy=True)
 
     def __repr__(self):
         return f"User('{self.email}', '{self.date_join}', '{self.id}')"
 
+    def is_authenticated(self):
+        return self.authenticated
+
+    def is_active(self):
+        #Assume all the users are active
+        return True
+
+    def is_anonymous(self):
+        #Anonymous users not supported
+        return False
+        
+    def get_id(self):
+        return self.id
+    
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,6 +66,10 @@ def login():
     if form.validate_on_submit():
         print("---test---")
     return render_template('login.html', title='Sign In', form=form)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 if __name__ == "__main__":
     app.run(debug=True)
