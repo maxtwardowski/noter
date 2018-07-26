@@ -1,8 +1,8 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm
-from flask_sqlalchemy import SQLAlchemy
-
 from datetime import datetime
+from flask import Flask, render_template, url_for, flash, redirect, request
+from flask_sqlalchemy import SQLAlchemy
+from forms import RegistrationForm, LoginForm
+from flask_login import LoginManager
 
 app = Flask(__name__)
 
@@ -11,6 +11,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,16 +32,24 @@ class Note(db.Model):
     date_create = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     date_edit = db.Column(db.DateTime, nullable=True, default=None)
 
+
 @app.route("/", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        print("hehehehe")
+        newuser = User(
+            email = form.email.data,
+            password = form.password.data,
+        )
+        db.session.add(newuser)
+        db.session.commit()
     return render_template('registration.html', title='Create Account', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        print("---test---")
     return render_template('login.html', title='Sign In', form=form)
 
 if __name__ == "__main__":
