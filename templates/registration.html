@@ -1,25 +1,26 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  {{ form.hidden_tag() }}
   <h1>Register</h1>
-  <div>
-    {{ form.email.label }}
-    {{ form.email }}
-  </div>
-  
-  <div>
-    {{ form.password.label }}
-    {{ form.password }}
-  </div>
+  <form method="post" action="">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.email.label }}
+      {{ form.email }}
+    </div>
+    
+    <div>
+      {{ form.password.label }}
+      {{ form.password }}
+    </div>
 
-  <div>
-    {{ form.password_confirm.label }}
-    {{ form.password_confirm }}
-  </div>
+    <div>
+      {{ form.password_confirm.label }}
+      {{ form.password_confirm }}
+    </div>
 
-  <div>
-    {{ form.submit }}
-  </div>
-
+    <div>
+      {{ form.submit }}
+    </div>
+  </form>
 {% endblock content %}

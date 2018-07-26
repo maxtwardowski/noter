@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
 
@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '382b514f430d789f42c196072f3bbe78'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
 
@@ -28,11 +29,11 @@ class Note(db.Model):
     date_create = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     date_edit = db.Column(db.DateTime, nullable=True, default=None)
 
-
 @app.route("/", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    #submission handling to be done 
+    if form.validate_on_submit():
+        print("hehehehe")
     return render_template('registration.html', title='Create Account', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
