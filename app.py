@@ -65,7 +65,10 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
 
         if user is not None:
-            login_user(user)
+            login_user(
+                user,
+                remember=True if form.staylogged.data is True else False,
+            )
             flash('Logged in successfully!')
 
             next = request.args.get('next')
