@@ -2,10 +2,9 @@ from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, logout_user, login_required
 from urllib.parse import urlparse, urljoin
 
-from app import app, login_manager, db
-from app.forms import RegistrationForm, LoginForm
-from app.models import User, Note
-
+from noter import app, login_manager, db
+from noter.forms import RegistrationForm, LoginForm
+from noter.models import User, Note
 
 @app.route("/", methods=['GET', 'POST'])
 def register():
