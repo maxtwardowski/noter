@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask_login import UserMixin
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from noter import db
 
@@ -13,8 +14,18 @@ class User(db.Model, UserMixin):
     authenticated = db.Column(db.Boolean, nullable=False, default=False)
     notes = db.relationship('Note', backref='author', lazy=True)
 
+    def __init__(self, email, password):
+        self.email = email
+        self.set_password(password)
+
     def __repr__(self):
-        return f"User(#{self.id}, {self.email}, {self.authenticated})"
+        return f"User(#{self.id}, {self.email}, {self.password})"
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class Note(db.Model):
