@@ -1,7 +1,9 @@
 from datetime import datetime
-from noter import db
 
 from flask_login import UserMixin
+
+from noter import db
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,10 +1,11 @@
-from flask import render_template, url_for, flash, redirect, request, abort
-from flask_login import login_user, logout_user, login_required
-from urllib.parse import urlparse, urljoin
+from flask import abort, flash, redirect, render_template, request, url_for
+from flask_login import login_required, login_user, logout_user
 
-from noter import app, login_manager, db
-from noter.forms import RegistrationForm, LoginForm
-from noter.models import User, Note
+from noter import app, db
+from noter.forms import LoginForm, RegistrationForm
+from noter.models import Note, User
+from noter.logintools import is_safe_url, load_user
+
 
 @app.route("/", methods=['GET', 'POST'])
 def register():
@@ -18,11 +19,7 @@ def register():
         db.session.commit()
     return render_template('registration.html', title='Create Account', form=form)
 
-def is_safe_url(target):
-    ref_url = urlparse(request.host_url)
-    test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and \
-           ref_url.netloc == test_url.netloc
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -43,10 +40,6 @@ def login():
 
             return redirect(next or url_for('login'))
     return render_template('login.html', title='Sign In', form=form)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
 
 @app.route("/logout")
 @login_required
