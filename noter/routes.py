@@ -11,14 +11,10 @@ from noter.logintools import is_safe_url, load_user
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        newuser = User(
-            email = form.email.data,
-            password = form.password.data,
-        )
+        newuser = User(form.email.data, form.password.data)
         db.session.add(newuser)
         db.session.commit()
     return render_template('registration.html', title='Create Account', form=form)
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -27,7 +23,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
 
-        if user is not None:
+        if user is not None and user.check_password(form.password.data):
             login_user(
                 user,
                 remember=True if form.staylogged.data is True else False,
