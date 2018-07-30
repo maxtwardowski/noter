@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, url_for, flash, redirect, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from forms import RegistrationForm, LoginForm
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user, UserMixin, login_required
 from urllib.parse import urlparse, urljoin
 
 app = Flask(__name__)
@@ -16,37 +16,28 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     date_join = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     authenticated = db.Column(db.Boolean, nullable=False, default=False)
-    #notes = db.relationship('Note', backref='author', lazy=True)
+    notes = db.relationship('Note', backref='author', lazy=True)
 
     def __repr__(self):
         return f"User(#{self.id}, {self.email}, {self.authenticated})"
 
-    def is_authenticated(self):
-        return self.authenticated
-
-    def is_active(self):
-        #Assume all the users are active
-        return True
-
-    def is_anonymous(self):
-        #Anonymous users not supported
-        return False
-        
-    def get_id(self):
-        return self.id
-    
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(40), unique=False, nullable=True)
     content = db.Column(db.Text, nullable=False)
     date_create = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     date_edit = db.Column(db.DateTime, nullable=True, default=None)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Note(#{self.id}, Title: {self.title}, Author ID: {self.user_id})"
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -71,10 +62,8 @@ def is_safe_url(target):
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User(
-            email = form.email.data,
-            password = form.password.data,
-        )
+        user = User.query.filter_by(email=form.email.data).first()
+        
         login_user(user)
         flash('Logged in successfully.')
 
@@ -89,5 +78,11 @@ def login():
 def load_user(user_id):
     return User.query.get(user_id)
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

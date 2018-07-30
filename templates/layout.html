@@ -10,10 +10,15 @@
   {% endif %}
 </head>
 <body>
-  <ul>
-    <li><a href="{{ url_for('register') }}">Register</a></li>
-    <li><a href="{{ url_for('login') }}">Login</a></li>
-  </ul>
+  <div>
+    {% if current_user.is_authenticated %}
+      Logged in as {{ current_user.email }}
+      <a href="{{ url_for('logout') }}"><strong>Logout</strong></a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Sign Up</a>
+    {% endif %}
+  </div>
   {% block content %}
   {% endblock %}
 </body>
