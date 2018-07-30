@@ -63,15 +63,16 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        
-        login_user(user)
-        flash('Logged in successfully.')
 
-        next = request.args.get('next')
-        if not is_safe_url(next):
-            return abort(400)
+        if user is not None:
+            login_user(user)
+            flash('Logged in successfully!')
 
-        return redirect(next or url_for('login'))
+            next = request.args.get('next')
+            if not is_safe_url(next):
+                return abort(400)
+
+            return redirect(next or url_for('login'))
     return render_template('login.html', title='Sign In', form=form)
 
 @login_manager.user_loader
