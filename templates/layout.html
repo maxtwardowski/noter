@@ -10,6 +10,10 @@
   {% endif %}
 </head>
 <body>
+  <ul>
+    <li><a href="{{ url_for('register') }}">Register</a></li>
+    <li><a href="{{ url_for('login') }}">Login</a></li>
+  </ul>
   {% block content %}
   {% endblock %}
 </body>

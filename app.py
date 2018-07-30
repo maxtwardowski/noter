@@ -1,8 +1,9 @@
 from datetime import datetime
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from forms import RegistrationForm, LoginForm
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user
+from urllib.parse import urlparse, urljoin
 
 app = Flask(__name__)
 
@@ -20,11 +21,11 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     date_join = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    authenticated = db.Column(db.Boolean, default=False)
+    authenticated = db.Column(db.Boolean, nullable=False, default=False)
     #notes = db.relationship('Note', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.email}', '{self.date_join}', '{self.id}')"
+        return f"User(#{self.id}, {self.email}, {self.authenticated})"
 
     def is_authenticated(self):
         return self.authenticated
@@ -60,11 +61,28 @@ def register():
         db.session.commit()
     return render_template('registration.html', title='Create Account', form=form)
 
-@app.route("/login", methods=['GET', 'POST'])
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and \
+           ref_url.netloc == test_url.netloc
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        print("---test---")
+        user = User(
+            email = form.email.data,
+            password = form.password.data,
+        )
+        login_user(user)
+        flash('Logged in successfully.')
+
+        next = request.args.get('next')
+        if not is_safe_url(next):
+            return abort(400)
+
+        return redirect(next or url_for('login'))
     return render_template('login.html', title='Sign In', form=form)
 
 @login_manager.user_loader
