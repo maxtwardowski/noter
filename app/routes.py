@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, abort
-from flask_login import login_user, logout_user, UserMixin, login_required
+from flask_login import login_user, logout_user, login_required
 from urllib.parse import urlparse, urljoin
 
-from app import app, login_manager
+from app import app, login_manager, db
 from app.forms import RegistrationForm, LoginForm
 from app.models import User, Note
 
