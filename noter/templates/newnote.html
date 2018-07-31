@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>New note</h1>
+  <form method="post" action="/newnote">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.title.label }}
+      {{ form.title }}
+    </div>
+    <div>
+      {{ form.content }}
+    </div>
+    <div>
+      {{ form.submit }}
+    </div>
+  </form>
+{% endblock content %}

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 from noter.models import User
@@ -26,4 +26,8 @@ class LoginForm(FlaskForm):
     staylogged = BooleanField('Stay logged in')
     submit = SubmitField('Login')
 
-    
+
+class NoteForm(FlaskForm):
+    title = StringField('Title')
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Save')
