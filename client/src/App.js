@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import Navi from './components/Navi';
+import Login from './components/Login';
+
 
 class App extends Component {
+
+  state = {
+    authenticated : false,
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <BrowserRouter>
+        <div>
+          <Navi authenticated={this.state.authenticated} />
+          <Switch>
+            <Route path="/" exact />
+            <Route path="/login" component={Login} />
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
 }

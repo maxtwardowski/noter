@@ -6,8 +6,10 @@ from noter.forms import LoginForm, RegistrationForm, NoteForm
 from noter.models import Note, User
 from noter.logintools import is_safe_url, load_user
 
-@app.route("/")
+@app.route("/", methods=['POST', 'GET'])
 def home():
+    data = request.get_json()
+    print (data)
     return render_template('home.html', title='Home')
 
 
