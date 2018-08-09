@@ -14,7 +14,7 @@ const Navi = props => {
     <div>
       <NavLink to="/">Home</NavLink>
       <NavLink to="/login">Login</NavLink>
-      <NavLink to="/register">Sign Up</NavLink>
+      <NavLink to="/register">Sign up</NavLink>
       <p>not authenticated</p>
     </div>
     )

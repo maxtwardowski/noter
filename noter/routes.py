@@ -1,4 +1,4 @@
-from flask import abort, flash, redirect, render_template, request, url_for
+from flask import abort, flash, redirect, render_template, request, url_for, jsonify
 from flask_login import login_required, login_user, logout_user, current_user
 
 from noter import app, db
@@ -6,41 +6,44 @@ from noter.forms import LoginForm, RegistrationForm, NoteForm
 from noter.models import Note, User
 from noter.logintools import is_safe_url, load_user
 
+
 @app.route("/", methods=['POST', 'GET'])
 def home():
     data = request.get_json()
-    print (data)
+    print(data)
     return render_template('home.html', title='Home')
 
 
-@app.route("/signup", methods=['GET', 'POST'])
+@app.route("/signup", methods=['POST'])
 def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        newuser = User(form.email.data, form.password.data)
-        db.session.add(newuser)
-        db.session.commit()
-    return render_template('registration.html', title='Create Account', form=form)
+    email = request.json.get('email')
+    password = request.json.get('password')
+    confirmpassword = request.json.get('confirm_password')
+    if email is None or password is None:
+        abort(400) # missing arguments
+    if not password == confirmpassword:
+        abort(400)
+    if User.query.filter_by(email=email).first() is not None:
+        abort(400) # existing user
+    user = User(email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({ 'email': user.email }), 201, {'Location': url_for('register', id = user.id, _external = True)}
 
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.check_password(form.password.data):
-            login_user(
-                user,
-                remember=True if form.staylogged.data is True else False,
-            )
-            flash('Logged in successfully!')
-
-            next = request.args.get('next')
-            if not is_safe_url(next):
-                return abort(400)
-
-            return redirect(next or url_for('notebook'))
-    return render_template('login.html', title='Sign In', form=form)
+    email = request.json.get('email')
+    password = request.json.get('password')
+    staylogged = request.json.get('staylogged')
+    if email is None or password is None:
+        abort(400)
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        abort(400)
+    if user.check_password(password):
+        login_user(user, remember=staylogged)
+        return jsonify({ 'logged': True })
+    return jsonify({ 'logged': False })
 
 @app.route("/logout")
 @login_required

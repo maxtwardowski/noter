@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_cors import CORS
 
+import wtforms_json
+
 app = Flask(__name__)
 
 CORS(app)
@@ -15,5 +17,7 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+wtforms_json.init()
 
 from noter import routes
