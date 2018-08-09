@@ -5,13 +5,13 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
+CORS(app)
+
 app.config['SECRET_KEY'] = '382b514f430d789f42c196072f3bbe78'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
-
-CORS(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

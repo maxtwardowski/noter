@@ -6,7 +6,7 @@ const Navi = props => {
     return (
       <div>
         <NavLink to="/">Home</NavLink>
-        <p>authenticateddddd</p>
+        <p>authenticated</p>
       </div>
     )
   } else {
@@ -14,7 +14,8 @@ const Navi = props => {
     <div>
       <NavLink to="/">Home</NavLink>
       <NavLink to="/login">Login</NavLink>
-      <p>nopppp</p>
+      <NavLink to="/register">Sign Up</NavLink>
+      <p>not authenticated</p>
     </div>
     )
   }

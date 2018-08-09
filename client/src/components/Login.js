@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 
-import axios from 'axios';
-
 class Login extends Component {
 
   sendData = event => {
-
+    event.preventDefault();
     fetch('http://localhost:5000/', {
       method: 'POST',
       headers: {
@@ -13,8 +11,8 @@ class Login extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        firstParam: 'yourValue',
-        secondParam: 'yourOtherValue',
+        login: event.target.elements.logininput.value,
+        password: event.target.elements.passwordinput.value,
       })
     })
   }
@@ -24,7 +22,11 @@ class Login extends Component {
     return (
       <div>
         <h1>loginn.</h1>
-        <button onClick={this.sendData}>lets doooeeet babe!</button>
+        <form onSubmit={this.sendData}>
+          <p><input type="text" name="logininput" placeholder="Login"/></p>
+          <p><input type="text" name="passwordinput" placeholder="Password" /></p>
+          <button>lets dooooeeeet</button>
+        </form>
       </div>
     )
   }
