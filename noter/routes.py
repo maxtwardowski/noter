@@ -35,6 +35,9 @@ def login():
     email = request.json.get('email')
     password = request.json.get('password')
     rememberme = request.json.get('rememberme')
+    print(email)
+    print(password)
+    print(rememberme)
     if email is None or password is None:
         abort(400)
     user = User.query.filter_by(email=email).first()
