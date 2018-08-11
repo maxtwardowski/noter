@@ -34,14 +34,14 @@ def register():
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
-    staylogged = request.json.get('staylogged')
+    rememberme = request.json.get('rememberme')
     if email is None or password is None:
         abort(400)
     user = User.query.filter_by(email=email).first()
     if user is None:
         abort(400)
     if user.check_password(password):
-        login_user(user, remember=staylogged)
+        login_user(user, remember=rememberme)
         return jsonify({ 'logged': True })
     return jsonify({ 'logged': False })
 

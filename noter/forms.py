@@ -25,7 +25,7 @@ class RegistrationForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField('Email')
     password = PasswordField('Password')
-    staylogged = BooleanField('Stay logged in')
+    rememberme = BooleanField('Remember me')
 
 
 class NoteForm(FlaskForm):
