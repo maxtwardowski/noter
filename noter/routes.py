@@ -1,11 +1,27 @@
-from flask import abort, flash, redirect, render_template, request, url_for, jsonify
+from flask import abort, make_response, redirect, render_template, request, url_for, jsonify
 from flask_login import login_required, login_user, logout_user, current_user
+
+import jwt
+import datetime
+from functools import wraps
 
 from noter import app, db
 from noter.forms import LoginForm, RegistrationForm, NoteForm
 from noter.models import Note, User
 from noter.logintools import is_safe_url, load_user
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+        if not token:
+            return jsonify({'message' : 'Token is missing!'}), 403
+        try: 
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+        except:
+            return jsonify({'message' : 'Token is invalid!'}), 403
+        return f(*args, **kwargs)
+    return decorated
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
@@ -35,9 +51,6 @@ def login():
     email = request.json.get('email')
     password = request.json.get('password')
     rememberme = request.json.get('rememberme')
-    print(email)
-    print(password)
-    print(rememberme)
     if email is None or password is None:
         abort(400)
     user = User.query.filter_by(email=email).first()
@@ -45,8 +58,15 @@ def login():
         abort(400)
     if user.check_password(password):
         login_user(user, remember=rememberme)
-        return jsonify({ 'logged': True })
-    return jsonify({ 'logged': False })
+        token = jwt.encode({'user' : email, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=15)}, app.config['SECRET_KEY'])
+        return jsonify({
+            'token': token.decode('UTF-8')
+        })
+    return make_response(
+        'Authentication failed!',
+        401,
+        {'WWW-Authenticate' : 'Basic realm="Login Required"'}
+    )
 
 @app.route("/logout")
 @login_required
