@@ -33,34 +33,17 @@ class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axios.post('http://localhost:5000', {
+    axios.post('http://localhost:5000/login', {
       email: this.state.email,
       password: this.state.password,
       rememberme: this.state.rememberme,
     }).then(res => {
-      localStorage.setItem('token', res.data);
+      localStorage.setItem('token', res.data.token);
       //this.props.history.push('/protected')
     }).catch(() => this.setState({
       error: true
     }));
   }
-
-  /*sendData = e => {
-    e.preventDefault();
-    fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: e.target.elements.email.value,
-        password: e.target.elements.password.value,
-        rememberme: this.state.rememberme,
-      })
-    })
-  }*/
-
   
   render() {
     return (
