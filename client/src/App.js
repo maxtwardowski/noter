@@ -4,19 +4,20 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navi from './components/Navi';
 import Login from './components/Login';
 import Register from './components/Register'
-
+import Notebook from './components/Notebook'
 
 class App extends Component {
-
   render() {
     return (
       <BrowserRouter>
         <div>
           <Navi />
+          <h1>Noter</h1>
           <Switch>
             <Route path="/" exact />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/notebook" component={Notebook} />
           </Switch>
         </div>
       </BrowserRouter>

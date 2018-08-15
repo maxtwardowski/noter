@@ -7,6 +7,7 @@ const Navi = props => {
       <NavLink to="/">Home</NavLink>
       <NavLink to="/login">Login</NavLink>
       <NavLink to="/register">Sign up</NavLink>
+      <NavLink to="/notebook">My Notebook</NavLink>
     </div>
   )
 }
