@@ -8,15 +8,11 @@ import Register from './components/Register'
 
 class App extends Component {
 
-  state = {
-    authenticated : false,
-  }
-
   render() {
     return (
       <BrowserRouter>
         <div>
-          <Navi authenticated={this.state.authenticated} />
+          <Navi />
           <Switch>
             <Route path="/" exact />
             <Route path="/login" component={Login} />

@@ -1,14 +1,11 @@
-from flask import abort, make_response, redirect, render_template, request, url_for, jsonify
-from flask_login import login_required, login_user, logout_user, current_user
+from flask import abort, make_response, request, url_for, jsonify
 
 import jwt
 import datetime
 from functools import wraps
 
 from noter import app, db
-from noter.forms import LoginForm, RegistrationForm, NoteForm
 from noter.models import Note, User
-from noter.logintools import is_safe_url, load_user
 
 def token_required(f):
     @wraps(f)
@@ -27,8 +24,7 @@ def token_required(f):
 def home():
     data = request.get_json()
     print(data)
-    return render_template('home.html', title='Home')
-
+    return "<h1>homeeee</h1>"
 
 @app.route("/signup", methods=['POST'])
 def register():
@@ -57,7 +53,6 @@ def login():
     if user is None:
         abort(400)
     if user.check_password(password):
-        login_user(user, remember=rememberme)
         token = jwt.encode({'user' : email, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=15)}, app.config['SECRET_KEY'])
         return jsonify({
             'token': token.decode('UTF-8')
@@ -68,32 +63,17 @@ def login():
         {'WWW-Authenticate' : 'Basic realm="Login Required"'}
     )
 
+@token_required
 @app.route("/logout")
-@login_required
 def logout():
-    logout_user()
-    return redirect(url_for('login'))
+    return ""
 
+@token_required
 @app.route("/notebook")
-@login_required
 def notebook():
-    return render_template(
-        'notebook.html', 
-        title='My Notebook', 
-        notes=current_user.notes,
-    )
+    return ""
 
+@token_required
 @app.route("/newnote", methods=['GET', 'POST'])
-@login_required
 def newnote():
-    form = NoteForm()
-    if form.validate_on_submit():
-        note = Note(
-            title=form.title.data, 
-            content=form.content.data,
-            user_id=current_user.get_id(),
-            )
-        db.session.add(note)
-        db.session.commit()   
-        return redirect(url_for('notebook'))
-    return render_template('newnote.html', title='New Note', form=form)
+    return ""
