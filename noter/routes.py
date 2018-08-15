@@ -30,11 +30,8 @@ def home():
 def register():
     email = request.json.get('email')
     password = request.json.get('password')
-    confirmpassword = request.json.get('confirm_password')
     if email is None or password is None:
         abort(400) # missing arguments
-    if not password == confirmpassword:
-        abort(400)
     if User.query.filter_by(email=email).first() is not None:
         abort(400) # existing user
     user = User(email=email, password=password)
@@ -53,7 +50,13 @@ def login():
     if user is None:
         abort(400)
     if user.check_password(password):
-        token = jwt.encode({'user' : email, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=15)}, app.config['SECRET_KEY'])
+        token = jwt.encode(
+            {
+                'user' : email, 
+                'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=15)
+            }, 
+            app.config['SECRET_KEY']
+        )
         return jsonify({
             'token': token.decode('UTF-8')
         })
