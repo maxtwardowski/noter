@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 
-class Login extends Component {
+class Signup extends Component {
 
   constructor(props) {
     super(props);
@@ -10,36 +10,26 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      rememberme: false,
+      passwordconfirm: '',
       error: false,
+      passwordsmatch: undefined,
     }
 
-    this.toggleRememberMe = this.toggleRememberMe.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  toggleRememberMe = () => {
-    this.setState({
-      rememberme: !this.state.rememberme,
-    });
-  }
-
   handleChange = e => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    axios.post('http://localhost:5000/login', {
+    axios.post('http://localhost:5000/signup', {
       email: this.state.email,
       password: this.state.password,
-      rememberme: this.state.rememberme,
-    }).then(res => {
-      localStorage.setItem('token', res.data.token);
-      //this.props.history.push('/protected')
     }).catch(() => this.setState({
       error: true
     }));
@@ -48,19 +38,16 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <h2>Login</h2>
+        <h2>Sign up</h2>
         <form onSubmit={e => this.handleSubmit(e)}>
           <p><input type="text" name="email" placeholder="Email" onChange={e => this.handleChange(e)} /></p>
           <p><input type="password" name="password" placeholder="Password" onChange={e => this.handleChange(e)} /></p>
-          <p>
-            <input type="checkbox" id="rememberme" onChange={this.toggleRememberMe} />
-            <label htmlFor="rememberme">Remember me</label>
-          </p>
-          <button>lets dooooeeeet</button>
+          <p><input type="password" name="passwordconfirm" placeholder="Confirm Password" onChange={e => this.handleChange(e)} /></p>
+          <button>Create account</button>
         </form>
       </div>
     )
   }
 }
 
-export default Login;
+export default Signup;
