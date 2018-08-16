@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Navi from './components/Navi';
 import Login from './components/Login';
-import Register from './components/Register'
+import Signup from './components/Signup'
 import Notebook from './components/Notebook'
 
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
           <Switch>
             <Route path="/" exact />
             <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
+            <Route path="/signup" component={Signup} />
             <Route path="/notebook" component={Notebook} />
           </Switch>
         </div>

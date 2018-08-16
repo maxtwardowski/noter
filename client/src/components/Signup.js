@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 
-class Register extends Component {
+class Signup extends Component {
 
   constructor(props) {
     super(props);
@@ -12,6 +12,7 @@ class Register extends Component {
       password: '',
       passwordconfirm: '',
       error: false,
+      passwordsmatch: undefined,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,7 +21,7 @@ class Register extends Component {
 
   handleChange = e => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
@@ -37,16 +38,16 @@ class Register extends Component {
   render() {
     return (
       <div>
-        <h1>Sign up</h1>
+        <h2>Sign up</h2>
         <form onSubmit={e => this.handleSubmit(e)}>
           <p><input type="text" name="email" placeholder="Email" onChange={e => this.handleChange(e)} /></p>
           <p><input type="password" name="password" placeholder="Password" onChange={e => this.handleChange(e)} /></p>
           <p><input type="password" name="passwordconfirm" placeholder="Confirm Password" onChange={e => this.handleChange(e)} /></p>
-          <button>Register</button>
+          <button>Create account</button>
         </form>
       </div>
     )
   }
 }
 
-export default Register;
+export default Signup;

@@ -9,11 +9,11 @@ class Login extends Component {
 
     this.state = {
       email: '',
-      password: '', 
+      password: '',
       rememberme: false,
       error: false,
     }
-    
+
     this.toggleRememberMe = this.toggleRememberMe.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,11 +44,11 @@ class Login extends Component {
       error: true
     }));
   }
-  
+
   render() {
     return (
       <div>
-        <h1>Login</h1>
+        <h2>Login</h2>
         <form onSubmit={e => this.handleSubmit(e)}>
           <p><input type="text" name="email" placeholder="Email" onChange={e => this.handleChange(e)} /></p>
           <p><input type="password" name="password" placeholder="Password" onChange={e => this.handleChange(e)} /></p>

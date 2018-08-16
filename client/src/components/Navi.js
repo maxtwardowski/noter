@@ -6,7 +6,7 @@ const Navi = props => {
     <div>
       <NavLink to="/">Home</NavLink>
       <NavLink to="/login">Login</NavLink>
-      <NavLink to="/register">Sign up</NavLink>
+      <NavLink to="/signup">Sign up</NavLink>
       <NavLink to="/notebook">My Notebook</NavLink>
     </div>
   )

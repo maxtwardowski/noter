@@ -10,11 +10,11 @@ from noter.models import Note, User
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.args.get('token')
+        token = request.headers.get('Authorization').encode('UTF-8')
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
-        try: 
-            data = jwt.decode(token, app.config['SECRET_KEY'])
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithm='HS256')
         except:
             return jsonify({'message' : 'Token is invalid!'}), 403
         return f(*args, **kwargs)
@@ -52,10 +52,11 @@ def login():
     if user.check_password(password):
         token = jwt.encode(
             {
-                'user' : email, 
-                'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=15)
-            }, 
-            app.config['SECRET_KEY']
+                'user' : email,
+                'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            },
+            app.config['SECRET_KEY'],
+            algorithm='HS256'
         )
         return jsonify({
             'token': token.decode('UTF-8')

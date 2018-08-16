@@ -8,19 +8,24 @@ class Notebook extends Component {
     this.handleSubmitButtonProtected = this.handleSubmitButtonProtected.bind(this);
     this.handleSubmitButtonUnprotected = this.handleSubmitButtonUnprotected.bind(this);
   }
-  
+
   handleSubmitButtonProtected = e => {
     e.preventDefault();
-    axios.get(`http://localhost:5000/protected?token=${localStorage.getItem('token')}`)
-      .then(res => {
-      console.log(res);
-    });
+    axios.get(
+      `http://localhost:5000/protected`,
+      {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      }
+    )
+    console.log(localStorage.getItem('token'))
   }
-  
+
 
   handleSubmitButtonUnprotected = e => {
     e.preventDefault();
-    axios.get('http://localhost:5000/unprotected')
+    axios.get(`http://localhost:5000/unprotected`)
     .then(res => console.log(res))
     .catch(() => console.log("errrrrorrrr"));
   }
@@ -28,8 +33,8 @@ class Notebook extends Component {
   render() {
     return (
       <div>
-        <button onClick={e => this.handleSubmitButtonProtected(e)}>Protected</button>
-        <button onClick={e => this.handleSubmitButtonUnprotected(e)}>Unprotected</button>
+        <p><button onClick={e => this.handleSubmitButtonProtected(e)}>Protected</button></p>
+        <p><button onClick={e => this.handleSubmitButtonUnprotected(e)}>Unprotected</button></p>
       </div>
     )
   }
