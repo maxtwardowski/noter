@@ -1,3 +1,3 @@
-export const AUTHENTICATED = 'authenticated_user';
-export const UNAUTHENTICATED = 'unauthenticated_user';
-export const AUTHENTICATION_ERROR = 'authentication_error';
+export const AUTHENTICATE = 'AUTHENTICATE_USER';
+export const REJECT = 'REJECT_USER';
+export const ERROR = 'AUTHENTICATION_ERROR';
