@@ -2,11 +2,18 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { authenticate } from '../actions';
+import { authenticate, setError } from '../actions';
+
+const mapStateToProps = state => (
+  {
+    authentication_error: state.authentication_error
+  }
+)
 
 const mapDispatchToProps = dispatch => (
   {
-    authenticate: (user, notes) => dispatch(authenticate(user, notes))
+    authenticate: (user, notes) => dispatch(authenticate(user, notes)),
+    setError: () => dispatch(setError())
   }
 )
 
@@ -18,14 +25,17 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      rememberme: false,
-      error: false,
+      rememberme: false
     }
 
     this.toggleRememberMe = this.toggleRememberMe.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  hasAuthErrorOccured = () => (
+    this.props.authentication_error
+  )
 
   toggleRememberMe = () => {
     this.setState({
@@ -49,15 +59,26 @@ class Login extends Component {
       localStorage.setItem('token', res.data.token);
       this.props.authenticate(res.data.user, res.data.notes);
       //this.props.history.push('/protected')
-    }).catch(() => this.setState({
-      error: true
-    }));
+    }).catch(() => {
+      this.props.setError()
+    });
+  }
+
+  renderAuthErrorMessage = () => {
+    if (this.hasAuthErrorOccured()) {
+      return (
+        <p style={{color:'red'}}>Email or password is incorrect!</p>
+      )
+    } else {
+      return;
+    }
   }
 
   render() {
     return (
       <div>
         <h2>Login</h2>
+        {this.renderAuthErrorMessage()}
         <form onSubmit={e => this.handleSubmit(e)}>
           <p><input type="text" name="email" placeholder="Email" onChange={e => this.handleChange(e)} /></p>
           <p><input type="password" name="password" placeholder="Password" onChange={e => this.handleChange(e)} /></p>
@@ -65,11 +86,14 @@ class Login extends Component {
             <input type="checkbox" id="rememberme" onChange={this.toggleRememberMe} />
             <label htmlFor="rememberme">Remember me</label>
           </p>
-          <button>lets dooooeeeet</button>
+          <button>Log In</button>
         </form>
       </div>
     )
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

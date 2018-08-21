@@ -1,4 +1,4 @@
-import { AUTHENTICATE, REJECT, ERROR } from '../constant/action-types';
+import { AUTHENTICATE, REJECT, SET_ERROR } from '../constant/action-types';
 
 const initialState = {
   authenticated: false,
@@ -13,6 +13,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authenticated: true,
+        authentication_error: false,
         user: action.payload.user,
         notes: action.payload.notes
       }
@@ -23,7 +24,7 @@ const reducer = (state = initialState, action) => {
         user: undefined,
         notes: []
       }
-    case ERROR:
+    case SET_ERROR:
       return {
         ...state,
         authentication_error: true

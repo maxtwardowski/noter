@@ -37,6 +37,7 @@ class Navi extends Component {
         <div>
           <NavLink to="/">Home</NavLink>
           <NavLink to="/notebook">My Notebook</NavLink>
+          <NavLink to="/newnote">New Note</NavLink>
           <a href="" onClick={this.handleLogout}>Logout</a>
         </div>
       )

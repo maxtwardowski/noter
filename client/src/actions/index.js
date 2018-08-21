@@ -1,4 +1,4 @@
-import { AUTHENTICATE, REJECT, ERROR } from '../constant/action-types';
+import { AUTHENTICATE, REJECT, SET_ERROR } from '../constant/action-types';
 
 export const authenticate = (user, notes) => ({
   type: AUTHENTICATE,
@@ -12,6 +12,6 @@ export const reject = () => ({
   type: REJECT
 });
 
-export const error = () => ({
-  type: ERROR
+export const setError = () => ({
+  type: SET_ERROR
 });

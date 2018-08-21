@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import Navi from './components/Navi';
-import Login from './components/Login';
+import Navi from './components/Navi'
+import Login from './components/Login'
 import Signup from './components/Signup'
 import Notebook from './components/Notebook'
+import NoteAdder from './components/NoteAdder'
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/notebook" component={Notebook} />
+            <Route path="/newnote" component={NoteAdder} />
           </Switch>
         </div>
       </BrowserRouter>
