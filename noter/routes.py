@@ -1,7 +1,6 @@
 from flask import abort, make_response, request, url_for, jsonify
 
-import jwt
-import datetime
+import jwt, datetime, json
 from functools import wraps
 
 from noter import app, db
@@ -58,8 +57,14 @@ def login():
             app.config['SECRET_KEY'],
             algorithm='HS256'
         )
+        note_objects = user.notes
+        notes = []
+        for note in note_objects:
+            notes.append(note.content)
         return jsonify({
-            'token': token.decode('UTF-8')
+            'token': token.decode('UTF-8'),
+            'user': email,
+            'notes': json.dumps(notes)
         })
     return make_response(
         'Authentication failed!',

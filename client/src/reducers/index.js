@@ -13,7 +13,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authenticated: true,
-        user: action.payload
+        user: action.payload.user,
+        notes: action.payload.notes
       }
     case REJECT:
       return {
