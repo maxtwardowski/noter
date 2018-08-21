@@ -8,6 +8,8 @@ import store from './store';
 
 import './static/index.css';
 
+window.store = store;
+
 const app = document.getElementById('root');
 
 ReactDOM.render(

@@ -64,7 +64,7 @@ def login():
         return jsonify({
             'token': token.decode('UTF-8'),
             'user': email,
-            'notes': json.dumps(notes)
+            'notes': notes
         })
     return make_response(
         'Authentication failed!',
