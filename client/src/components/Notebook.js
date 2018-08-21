@@ -1,43 +1,40 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import store from '../store';
+import { authenticate } from '../actions';
+import { connect } from 'react-redux';
+
+const mapDispatchToProps = dispatch => (
+  {
+    authenticate: () => dispatch(authenticate())
+  }
+);
 
 class Notebook extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSubmitButtonProtected = this.handleSubmitButtonProtected.bind(this);
-    this.handleSubmitButtonUnprotected = this.handleSubmitButtonUnprotected.bind(this);
+
+    this.handleButtonState = this.handleButtonState.bind(this);
+    this.handleButtonAuth = this.handleButtonAuth.bind(this);
   }
 
-  handleSubmitButtonProtected = e => {
+  handleButtonState = e => {
     e.preventDefault();
-    axios.get(
-      `http://localhost:5000/protected`,
-      {
-        headers: {
-          Authorization: localStorage.getItem('token')
-        }
-      }
-    )
-    console.log(localStorage.getItem('token'))
+    console.log(store.getState())
   }
 
-
-  handleSubmitButtonUnprotected = e => {
-    e.preventDefault();
-    axios.get(`http://localhost:5000/unprotected`)
-    .then(res => console.log(res))
-    .catch(() => console.log("errrrrorrrr"));
+  handleButtonAuth = e => {
+    this.props.authenticate();
   }
 
   render() {
     return (
       <div>
-        <p><button onClick={e => this.handleSubmitButtonProtected(e)}>Protected</button></p>
-        <p><button onClick={e => this.handleSubmitButtonUnprotected(e)}>Unprotected</button></p>
+        <button onClick={e => this.handleButtonState(e)}>GetState</button>
+        <button onClick={e => this.handleButtonAuth(e)}>Auth</button>
       </div>
     )
   }
 }
 
-export default Notebook;
+export default connect(null, mapDispatchToProps)(Notebook);

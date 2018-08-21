@@ -1,2 +1,2 @@
 # noter
-Note-taking app created with Flask
+Note-taking app with Flask backend and React frontend

@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { authenticate } from '../actions';
+
+const mapDispatchToProps = dispatch => (
+  {
+    authenticate: (user, notes) => dispatch(authenticate(user, notes))
+  }
+)
 
 class Login extends Component {
 
@@ -39,6 +47,7 @@ class Login extends Component {
       rememberme: this.state.rememberme,
     }).then(res => {
       localStorage.setItem('token', res.data.token);
+      this.props.authenticate(res.data.user, res.data.notes);
       //this.props.history.push('/protected')
     }).catch(() => this.setState({
       error: true
@@ -63,4 +72,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
