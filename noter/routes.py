@@ -85,15 +85,7 @@ def notebook():
 @token_required
 @app.route("/newnote", methods=['GET', 'POST'])
 def newnote():
-    return ""
-
-@app.route("/protected", methods=['GET'])
-@token_required
-def protected():
-    print("protected")
-    return jsonify({'message': 'protected'})
-
-@app.route("/unprotected", methods=['GET'])
-def unprotected():
-    print("unprotected")
-    return jsonify({'message': 'unprotected'})
+    newnote = Note(
+        title=request.json.get('title'),
+        content=request.json.get('content')
+    )
