@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
+
+const mapStateToProps = state => (
+  {
+    user: state.user
+  }
+)
 
 class NoteAdder extends Component {
 
@@ -16,6 +23,10 @@ class NoteAdder extends Component {
 
   }
 
+  getUser = () => (
+    this.props.user
+  )
+
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -25,6 +36,7 @@ class NoteAdder extends Component {
   handleSubmit = e => {
     e.preventDefault()
     axios.post('http://localhost:5000/newnote', {
+      user: this.getUser(),
       title: this.state.title,
       content: this.state.content
     })
@@ -43,4 +55,4 @@ class NoteAdder extends Component {
   }
 }
 
-export default NoteAdder;
+export default connect(mapStateToProps)(NoteAdder);

@@ -87,5 +87,11 @@ def notebook():
 def newnote():
     newnote = Note(
         title=request.json.get('title'),
-        content=request.json.get('content')
+        content=request.json.get('content'),
+        user_id=User.query.filter_by(email=request.json.get('user')).first().get_id()
     )
+    db.session.add(newnote)
+    db.session.commit()
+    return jsonify({
+        'message': 'success'
+    })
