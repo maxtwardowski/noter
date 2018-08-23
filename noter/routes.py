@@ -73,16 +73,6 @@ def login():
     )
 
 @token_required
-@app.route("/logout")
-def logout():
-    return ""
-
-@token_required
-@app.route("/notebook")
-def notebook():
-    return ""
-
-@token_required
 @app.route("/newnote", methods=['GET', 'POST'])
 def newnote():
     newnote = Note(
