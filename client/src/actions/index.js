@@ -1,11 +1,13 @@
-import { AUTHENTICATE, REJECT, SET_ERROR } from '../constant/action-types';
+import {
+  AUTHENTICATE,
+  REJECT,
+  SET_ERROR,
+  LOAD_NOTES
+} from '../constant/action-types';
 
-export const authenticate = (user, notes) => ({
+export const authenticate = user => ({
   type: AUTHENTICATE,
-  payload: {
-    user,
-    notes
-  }
+  payload: user
 });
 
 export const reject = () => ({
@@ -14,4 +16,9 @@ export const reject = () => ({
 
 export const setError = () => ({
   type: SET_ERROR
+});
+
+export const loadNotes = notes => ({
+  type: LOAD_NOTES,
+  payload: notes
 });

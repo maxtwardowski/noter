@@ -1,3 +1,4 @@
 export const AUTHENTICATE = 'AUTHENTICATE_USER';
 export const REJECT = 'REJECT_USER';
 export const SET_ERROR = 'AUTHENTICATION_ERROR';
+export const LOAD_NOTES = 'LOAD_NOTES';

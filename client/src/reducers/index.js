@@ -1,4 +1,9 @@
-import { AUTHENTICATE, REJECT, SET_ERROR } from '../constant/action-types';
+import {
+  AUTHENTICATE,
+  REJECT,
+  SET_ERROR,
+  LOAD_NOTES
+} from '../constant/action-types';
 
 const initialState = {
   authenticated: false,
@@ -14,8 +19,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         authenticated: true,
         authentication_error: false,
-        user: action.payload.user,
-        notes: action.payload.notes
+        user: action.payload
       }
     case REJECT:
       return {
@@ -28,6 +32,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authentication_error: true
+      }
+    case LOAD_NOTES:
+      return {
+        ...state,
+        notes: action.payload
       }
     default:
       return state;
