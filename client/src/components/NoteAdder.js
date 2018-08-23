@@ -20,7 +20,7 @@ class NoteAdder extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-
+    this.handleGetNotes = this.handleGetNotes.bind(this)
   }
 
   getUser = () => (
@@ -42,6 +42,17 @@ class NoteAdder extends Component {
     })
   }
 
+  handleGetNotes = e => {
+    e.preventDefault()
+    axios.get('http://localhost:5000/getnotes', {
+      'headers': {
+        'user': this.getUser()
+      }
+    }).then(res => {
+      console.log(res)
+    })
+  }
+
   render() {
     return (
       <div>
@@ -50,6 +61,7 @@ class NoteAdder extends Component {
           <p><input type="text" name="content" placeholder="Let's note something..." onChange={e => this.handleChange(e)} /></p>
           <p><button>Save</button></p>
         </form>
+        <button onClick={e => this.handleGetNotes(e)}>get notezz</button>
       </div>
     )
   }

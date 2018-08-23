@@ -95,3 +95,19 @@ def newnote():
     return jsonify({
         'message': 'success'
     })
+
+@token_required
+@app.route("/getnotes", methods=['GET'])
+def getnotes():
+    notes = User.query.filter_by(email=request.headers.get('user')).first().notes
+    notes_list = []
+    for note in notes:
+        notes_list.append(
+            {
+                'title': note.title,
+                'content': note.content,
+                'date_create': note.date_create,
+                'date_edit': note.date_edit
+            }
+        )
+    return jsonify(notes_list)

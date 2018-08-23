@@ -5,7 +5,8 @@ import { reject } from '../actions';
 
 const mapStateToProps = state => (
   {
-    authenticated: state.authenticated
+    authenticated: state.authenticated,
+    user: state.user
   }
 )
 
@@ -26,15 +27,20 @@ class Navi extends Component {
     this.props.authenticated
   )
 
+  getUser = () => (
+    this.props.user
+  )
+
   handleLogout = () => {
     localStorage.removeItem('token');
     this.props.reject();
   }
 
-  render() {
+  renderAuthNavbar = () => {
     if (this.isAuthenticated()) {
       return (
         <div>
+          <p>Logged in as {this.getUser()}</p>
           <NavLink to="/">Home</NavLink>
           <NavLink to="/notebook">My Notebook</NavLink>
           <NavLink to="/newnote">New Note</NavLink>
@@ -50,6 +56,14 @@ class Navi extends Component {
         </div>
       )
     }
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderAuthNavbar()}
+      </div>
+    )
   }
 }
 
