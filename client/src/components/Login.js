@@ -5,21 +5,16 @@ import { connect } from 'react-redux';
 import { authenticate, setError } from '../actions';
 import { API_ADDRESS } from '../constant/server'
 
-const mapStateToProps = state => (
-  {
+const mapStateToProps = state => ({
     authentication_error: state.authentication_error
-  }
-)
+})
 
-const mapDispatchToProps = dispatch => (
-  {
+const mapDispatchToProps = dispatch => ({
     authenticate: (user, notes) => dispatch(authenticate(user, notes)),
     setError: () => dispatch(setError())
-  }
-)
+})
 
 class Login extends Component {
-
   constructor(props) {
     super(props);
 

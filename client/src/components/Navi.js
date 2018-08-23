@@ -3,21 +3,16 @@ import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { reject } from '../actions'
 
-const mapStateToProps = state => (
-  {
+const mapStateToProps = state => ({
     authenticated: state.authenticated,
     user: state.user
-  }
-)
+})
 
-const mapDispatchToProps = dispatch => (
-  {
+const mapDispatchToProps = dispatch => ({
     reject: () => dispatch(reject())
-  }
-)
+})
 
 class Navi extends Component {
-
   constructor(props) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
@@ -31,11 +26,6 @@ class Navi extends Component {
     this.props.user
   )
 
-  handleLogout = () => {
-    localStorage.removeItem('token');
-    this.props.reject();
-  }
-
   renderAuthNavbar = () => {
     if (this.isAuthenticated()) {
       return (
@@ -44,7 +34,7 @@ class Navi extends Component {
           <NavLink to="/">Home</NavLink>
           <NavLink to="/notebook">My Notebook</NavLink>
           <NavLink to="/newnote">New Note</NavLink>
-          <a href="" onClick={this.handleLogout}>Logout</a>
+          <NavLink to="/logout">Logout</NavLink>
         </div>
       )
     } else {
@@ -68,3 +58,5 @@ class Navi extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navi);
+
+//<a href="" onClick={this.handleLogout}>Logout</a>

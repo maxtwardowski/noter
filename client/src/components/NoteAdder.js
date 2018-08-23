@@ -3,14 +3,11 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { API_ADDRESS } from '../constant/server'
 
-const mapStateToProps = state => (
-  {
+const mapStateToProps = state => ({
     user: state.user
-  }
-)
+})
 
 class NoteAdder extends Component {
-
   constructor(props) {
     super(props)
 

@@ -4,21 +4,16 @@ import { loadNotes } from '../actions'
 import axios from 'axios'
 import { API_ADDRESS } from '../constant/server'
 
-const mapStateToProps = state => (
-  {
+const mapStateToProps = state => ({
     user: state.user,
     notes: state.notes
-  }
-)
+})
 
-const mapDispatchToProps = dispatch => (
-  {
+const mapDispatchToProps = dispatch => ({
     loadNotes: notes => dispatch(loadNotes(notes))
-  }
-)
+})
 
 class Notebook extends Component {
-
   componentDidMount = () => {
     axios.get(`${API_ADDRESS}/getnotes`, {
       'headers': {

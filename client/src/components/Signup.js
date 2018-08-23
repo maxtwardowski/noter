@@ -3,7 +3,6 @@ import axios from 'axios'
 import { API_ADDRESS } from '../constant/server'
 
 class Signup extends Component {
-
   constructor(props) {
     super(props);
 
