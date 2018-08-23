@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-
-import axios from 'axios';
+import React, { Component } from 'react'
+import axios from 'axios'
+import { API_ADDRESS } from '../constant/server'
 
 class Signup extends Component {
 
@@ -27,7 +27,7 @@ class Signup extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axios.post('http://localhost:5000/signup', {
+    axios.post(`${API_ADDRESS}/signup`, {
       email: this.state.email,
       password: this.state.password,
     }).catch(() => this.setState({

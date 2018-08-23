@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { loadNotes } from '../actions'
 import axios from 'axios'
+import { API_ADDRESS } from '../constant/server'
 
 const mapStateToProps = state => (
   {
@@ -19,7 +20,7 @@ const mapDispatchToProps = dispatch => (
 class Notebook extends Component {
 
   componentDidMount = () => {
-    axios.get('http://localhost:5000/getnotes', {
+    axios.get(`${API_ADDRESS}/getnotes`, {
       'headers': {
         'user': this.getUser()
       }

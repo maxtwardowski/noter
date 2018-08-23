@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import { API_ADDRESS } from '../constant/server'
 
 const mapStateToProps = state => (
   {
@@ -34,7 +35,7 @@ class NoteAdder extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    axios.post('http://localhost:5000/newnote', {
+    axios.post(`${API_ADDRESS}/newnote`, {
       user: this.getUser(),
       title: this.state.title,
       content: this.state.content

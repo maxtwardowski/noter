@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { authenticate, setError } from '../actions';
+import { API_ADDRESS } from '../constant/server'
 
 const mapStateToProps = state => (
   {
@@ -51,7 +52,7 @@ class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axios.post('http://localhost:5000/login', {
+    axios.post(`${API_ADDRESS}/login`, {
       email: this.state.email,
       password: this.state.password,
       rememberme: this.state.rememberme,
