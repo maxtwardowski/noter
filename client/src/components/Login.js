@@ -80,10 +80,28 @@ class Login extends Component {
         <h2>Login</h2>
         {this.renderAuthErrorMessage()}
         <form onSubmit={e => this.handleSubmit(e)}>
-          <p><input type="text" name="email" placeholder="Email" onChange={e => this.handleChange(e)} /></p>
-          <p><input type="password" name="password" placeholder="Password" onChange={e => this.handleChange(e)} /></p>
           <p>
-            <input type="checkbox" id="rememberme" onChange={this.toggleRememberMe} />
+            <input
+              type="text"
+              name="email"
+              placeholder="Email"
+              onChange={e => this.handleChange(e)}
+            />
+          </p>
+          <p>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={e => this.handleChange(e)}
+            />
+          </p>
+          <p>
+            <input
+              type="checkbox"
+              id="rememberme"
+              onChange={this.toggleRememberMe}
+            />
             <label htmlFor="rememberme">Remember me</label>
           </p>
           <button>Log In</button>

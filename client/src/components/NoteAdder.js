@@ -20,7 +20,6 @@ class NoteAdder extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleGetNotes = this.handleGetNotes.bind(this)
   }
 
   getUser = () => (
@@ -46,8 +45,22 @@ class NoteAdder extends Component {
     return (
       <div>
         <form onSubmit={e => this.handleSubmit(e)}>
-          <p><input type="text" name="title" placeholder="Title" onChange={e => this.handleChange(e)} /></p>
-          <p><input type="text" name="content" placeholder="Let's note something..." onChange={e => this.handleChange(e)} /></p>
+          <p>
+            <input
+              type="text"
+              name="title"
+              placeholder="Title"
+              onChange={e => this.handleChange(e)}
+            />
+          </p>
+          <p>
+            <input
+              type="text"
+              name="content"
+              placeholder="Let's note something..."
+              onChange={e => this.handleChange(e)}
+            />
+          </p>
           <p><button>Save</button></p>
         </form>
       </div>

@@ -45,7 +45,9 @@ class Notebook extends Component {
               <h4>{note.title}</h4>
               <p>{note.content}</p>
               <p><i>Created: {note.date_create}</i></p>
-              <p><i>Last edit: {note.date_edit}</i></p>
+              {note.date_edit &&
+                <p><i>Last edit: {note.date_edit}</i></p>
+              }
             </li>
           ))}
         </ul>
