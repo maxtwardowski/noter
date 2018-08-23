@@ -1,71 +1,113 @@
-from flask import abort, flash, redirect, render_template, request, url_for
-from flask_login import login_required, login_user, logout_user, current_user
+from flask import abort, make_response, request, url_for, jsonify
+
+import jwt, datetime, json
+from functools import wraps
 
 from noter import app, db
-from noter.forms import LoginForm, RegistrationForm, NoteForm
 from noter.models import Note, User
-from noter.logintools import is_safe_url, load_user
 
-@app.route("/")
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization').encode('UTF-8')
+        if not token:
+            return jsonify({'message' : 'Token is missing!'}), 403
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithm='HS256')
+        except:
+            return jsonify({'message' : 'Token is invalid!'}), 403
+        return f(*args, **kwargs)
+    return decorated
+
+@app.route("/", methods=['POST', 'GET'])
 def home():
-    return render_template('home.html', title='Home')
+    data = request.get_json()
+    print(data)
+    return "<h1>homeeee</h1>"
 
-
-@app.route("/signup", methods=['GET', 'POST'])
+@app.route("/signup", methods=['POST'])
 def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        newuser = User(form.email.data, form.password.data)
-        db.session.add(newuser)
-        db.session.commit()
-    return render_template('registration.html', title='Create Account', form=form)
+    email = request.json.get('email')
+    password = request.json.get('password')
+    if email is None or password is None:
+        abort(400) # missing arguments
+    if User.query.filter_by(email=email).first() is not None:
+        abort(400) # existing user
+    user = User(email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({ 'email': user.email }), 201, {'Location': url_for('register', id = user.id, _external = True)}
 
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.check_password(form.password.data):
-            login_user(
-                user,
-                remember=True if form.staylogged.data is True else False,
-            )
-            flash('Logged in successfully!')
-
-            next = request.args.get('next')
-            if not is_safe_url(next):
-                return abort(400)
-
-            return redirect(next or url_for('notebook'))
-    return render_template('login.html', title='Sign In', form=form)
-
-@app.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
-
-@app.route("/notebook")
-@login_required
-def notebook():
-    return render_template(
-        'notebook.html', 
-        title='My Notebook', 
-        notes=current_user.notes,
+    email = request.json.get('email')
+    password = request.json.get('password')
+    rememberme = request.json.get('rememberme')
+    if email is None or password is None:
+        abort(400)
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        abort(400)
+    if user.check_password(password):
+        token = jwt.encode(
+            {
+                'user' : email,
+                'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            },
+            app.config['SECRET_KEY'],
+            algorithm='HS256'
+        )
+        note_objects = user.notes
+        notes = []
+        for note in note_objects:
+            notes.append(note.content)
+        return jsonify({
+            'token': token.decode('UTF-8'),
+            'user': email,
+            'notes': notes
+        })
+    return make_response(
+        'Authentication failed!',
+        401,
+        {'WWW-Authenticate' : 'Basic realm="Login Required"'}
     )
 
+@token_required
+@app.route("/logout")
+def logout():
+    return ""
+
+@token_required
+@app.route("/notebook")
+def notebook():
+    return ""
+
+@token_required
 @app.route("/newnote", methods=['GET', 'POST'])
-@login_required
 def newnote():
-    form = NoteForm()
-    if form.validate_on_submit():
-        note = Note(
-            title=form.title.data, 
-            content=form.content.data,
-            user_id=current_user.get_id(),
-            )
-        db.session.add(note)
-        db.session.commit()   
-        return redirect(url_for('notebook'))
-    return render_template('newnote.html', title='New Note', form=form)
+    newnote = Note(
+        title=request.json.get('title'),
+        content=request.json.get('content'),
+        user_id=User.query.filter_by(email=request.json.get('user')).first().get_id()
+    )
+    db.session.add(newnote)
+    db.session.commit()
+    return jsonify({
+        'message': 'success'
+    })
+
+@token_required
+@app.route("/getnotes", methods=['GET'])
+def getnotes():
+    notes = User.query.filter_by(email=request.headers.get('user')).first().notes
+    notes_list = []
+    for note in notes:
+        notes_list.append(
+            {
+                'title': note.title,
+                'content': note.content,
+                'date_create': note.date_create,
+                'date_edit': note.date_edit
+            }
+        )
+    return jsonify(notes_list)
