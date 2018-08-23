@@ -54,8 +54,7 @@ class Notebook extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notebook);
-
-/*
-
-*/
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Notebook);
