@@ -18,7 +18,7 @@ class App extends Component {
             <Route path="/" exact />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/notebook" component={Notebook} />
+            <Route path="/notebook" component={Notebook} onEnter={() => console.log('ejejej')} />
             <Route path="/newnote" component={NoteAdder} />
           </Switch>
         </div>
