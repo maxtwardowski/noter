@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from noter import db
+from api import db
 
 
 class User(db.Model, UserMixin):

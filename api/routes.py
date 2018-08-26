@@ -3,8 +3,8 @@ from flask import abort, make_response, request, url_for, jsonify
 import jwt, datetime, json
 from functools import wraps
 
-from noter import app, db
-from noter.models import Note, User
+from api import app, db
+from api.models import Note, User
 
 def token_required(f):
     @wraps(f)
