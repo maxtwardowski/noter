@@ -73,31 +73,29 @@ def login():
     )
 
 @token_required
-@app.route("/newnote", methods=['GET', 'POST'])
-def newnote():
-    newnote = Note(
-        title=request.json.get('title'),
-        content=request.json.get('content'),
-        user_id=User.query.filter_by(email=request.json.get('user')).first().get_id()
-    )
-    db.session.add(newnote)
-    db.session.commit()
-    return jsonify({
-        'message': 'success'
-    })
-
-@token_required
-@app.route("/getnotes", methods=['GET'])
+@app.route("/notes", methods=['GET', 'POST'])
 def getnotes():
-    notes = User.query.filter_by(email=request.headers.get('user')).first().notes
-    notes_list = []
-    for note in notes:
-        notes_list.append(
-            {
-                'title': note.title,
-                'content': note.content,
-                'date_create': note.date_create,
-                'date_edit': note.date_edit
-            }
+    if request.method == 'GET':
+        notes = User.query.filter_by(email=request.headers.get('user')).first().notes
+        notes_list = []
+        for note in notes:
+            notes_list.append(
+                {
+                    'title': note.title,
+                    'content': note.content,
+                    'date_create': note.date_create,
+                    'date_edit': note.date_edit
+                }
+            )
+        return jsonify(notes_list)
+    elif request.method == 'POST':
+        newnote = Note(
+            title=request.json.get('title'),
+            content=request.json.get('content'),
+            user_id=User.query.filter_by(email=request.json.get('user')).first().get_id()
         )
-    return jsonify(notes_list)
+        db.session.add(newnote)
+        db.session.commit()
+        return jsonify({
+            'message': 'success'
+        })

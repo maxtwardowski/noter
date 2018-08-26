@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Notebook extends Component {
   componentDidMount = () => {
-    axios.get(`${API_ADDRESS}/getnotes`, {
+    axios.get(`${API_ADDRESS}/notes`, {
       'headers': {
         'user': this.getUser()
       }

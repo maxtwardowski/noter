@@ -32,7 +32,7 @@ class NoteAdder extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    axios.post(`${API_ADDRESS}/newnote`, {
+    axios.post(`${API_ADDRESS}/notes`, {
       user: this.getUser(),
       title: this.state.title,
       content: this.state.content
