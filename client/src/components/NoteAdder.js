@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { API_ADDRESS } from '../constant/server'
+import Redirect from 'react-router-dom/Redirect';
 
 const mapStateToProps = state => ({
     user: state.user
@@ -13,7 +14,8 @@ class NoteAdder extends Component {
 
     this.state = {
       title: '',
-      content: ''
+      content: '',
+      toNotebook: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -36,10 +38,19 @@ class NoteAdder extends Component {
       user: this.getUser(),
       title: this.state.title,
       content: this.state.content
+    }).then(() => {
+      this.setState({
+        toNotebook: true
+      })
     })
   }
 
   render() {
+    if (this.state.toNotebook) {
+      return (
+        <Redirect to="/notebook" />
+      )
+    }
     return (
       <div>
         <form onSubmit={e => this.handleSubmit(e)}>
