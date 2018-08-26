@@ -1,7 +1,7 @@
 import {
   AUTHENTICATE,
   REJECT,
-  SET_ERROR,
+  TOGGLE_AUTHENTICATION_ERROR,
   LOAD_NOTES
 } from '../constant/action-types';
 
@@ -14,8 +14,8 @@ export const reject = () => ({
   type: REJECT
 });
 
-export const setError = () => ({
-  type: SET_ERROR
+export const toggleAuthError = () => ({
+  type: TOGGLE_AUTHENTICATION_ERROR
 });
 
 export const loadNotes = notes => ({

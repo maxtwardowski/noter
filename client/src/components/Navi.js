@@ -13,11 +13,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class Navi extends Component {
-  constructor(props) {
-    super(props);
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-
   isAuthenticated = () => (
     this.props.authenticated
   )
@@ -58,5 +53,3 @@ class Navi extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navi);
-
-//<a href="" onClick={this.handleLogout}>Logout</a>

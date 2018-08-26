@@ -8,7 +8,10 @@ import reducer from '../reducers'
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['authentication_error']
+  blacklist: [
+    'auth_error',
+    'signup_error'
+  ]
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)

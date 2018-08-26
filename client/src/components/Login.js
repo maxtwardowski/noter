@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { authenticate, setError } from '../actions';
+import { authenticate, toggleAuthError } from '../actions';
 import { API_ADDRESS } from '../constant/server'
+import Redirect from 'react-router-dom/Redirect';
 
 const mapStateToProps = state => ({
-    authentication_error: state.authentication_error
+    auth_error: state.auth_error
 })
 
 const mapDispatchToProps = dispatch => ({
     authenticate: (user, notes) => dispatch(authenticate(user, notes)),
-    setError: () => dispatch(setError())
+    toggleAuthError: () => dispatch(toggleAuthError())
 })
 
 class Login extends Component {
@@ -21,7 +22,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      rememberme: false
+      rememberme: false,
+      toNotebook: false
     }
 
     this.toggleRememberMe = this.toggleRememberMe.bind(this);
@@ -30,7 +32,7 @@ class Login extends Component {
   }
 
   hasAuthErrorOccured = () => (
-    this.props.authentication_error
+    this.props.auth_error
   )
 
   toggleRememberMe = () => {
@@ -54,9 +56,12 @@ class Login extends Component {
     }).then(res => {
       localStorage.setItem('token', res.data.token);
       this.props.authenticate(res.data.user, res.data.notes);
+      this.setState({
+        toNotebook: true
+      })
       //this.props.history.push('/protected')
     }).catch(() => {
-      this.props.setError()
+      this.props.toggleAuthError()
     });
   }
 
@@ -71,6 +76,11 @@ class Login extends Component {
   }
 
   render() {
+    if (this.state.toNotebook) {
+      return (
+        <Redirect to="/notebook" />
+      )
+    }
     return (
       <div>
         <h2>Login</h2>

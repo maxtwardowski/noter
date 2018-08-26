@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Home from './components/Home'
 import Navi from './components/Navi'
 import Login from './components/Login'
 import Signup from './components/Signup'
@@ -25,7 +26,7 @@ class App extends Component {
           <Navi />
           <h1>Noter</h1>
           <Switch>
-            <Route path="/" exact />
+            <Route path="/" component={Home} exact />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/notebook" component={Notebook} />

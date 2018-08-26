@@ -1,13 +1,14 @@
 import {
   AUTHENTICATE,
   REJECT,
-  SET_ERROR,
+  TOGGLE_AUTHENTICATION_ERROR,
   LOAD_NOTES
 } from '../constant/action-types';
 
 const initialState = {
   authenticated: false,
-  authentication_error: false,
+  auth_error: false,
+  signup_error: false,
   user: undefined,
   notes: [],
 }
@@ -18,7 +19,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authenticated: true,
-        authentication_error: false,
+        auth_error: false,
         user: action.payload
       }
     case REJECT:
@@ -28,10 +29,10 @@ const reducer = (state = initialState, action) => {
         user: undefined,
         notes: []
       }
-    case SET_ERROR:
+    case TOGGLE_AUTHENTICATION_ERROR:
       return {
         ...state,
-        authentication_error: true
+        auth_error: true
       }
     case LOAD_NOTES:
       return {
