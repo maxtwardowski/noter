@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { loadNotes } from '../actions'
 import axios from 'axios'
 import { API_ADDRESS } from '../constant/server'
+import Note from './Note'
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -38,12 +39,7 @@ class Notebook extends Component {
         <ul>
           {this.props.notes.map(note => (
             <li key={note.title}>
-              <h4>{note.title}</h4>
-              <p>{note.content}</p>
-              <p><i>Created: {note.date_create}</i></p>
-              {note.date_edit &&
-                <p><i>Last edit: {note.date_edit}</i></p>
-              }
+              <Note note={note} />
             </li>
           ))}
         </ul>
