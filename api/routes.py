@@ -19,12 +19,6 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated
 
-@app.route("/", methods=['POST', 'GET'])
-def home():
-    data = request.get_json()
-    print(data)
-    return "<h1>homeeee</h1>"
-
 @app.route("/signup", methods=['POST'])
 def register():
     email = request.json.get('email')
@@ -36,7 +30,13 @@ def register():
     user = User(email=email, password=password)
     db.session.add(user)
     db.session.commit()
-    return jsonify({ 'email': user.email }), 201, {'Location': url_for('register', id = user.id, _external = True)}
+    return jsonify({ 'email': user.email }), 201, {
+        'Location': url_for(
+            'register',
+            id = user.id,
+            _external = True
+            )
+        }
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -69,7 +69,9 @@ def login():
     return make_response(
         'Authentication failed!',
         401,
-        {'WWW-Authenticate' : 'Basic realm="Login Required"'}
+        {
+            'WWW-Authenticate' : 'Basic realm="Login Required"'
+        }
     )
 
 @token_required
