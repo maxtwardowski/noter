@@ -73,7 +73,7 @@ def login():
     )
 
 @token_required
-@app.route("/notes", methods=['GET', 'POST', 'PATCH'])
+@app.route("/notes", methods=['GET', 'POST', 'PATCH', 'DELETE'])
 def getnotes():
     if request.method == 'GET':
         notes = User.query.filter_by(email=request.headers.get('user')).first().notes
@@ -105,6 +105,13 @@ def getnotes():
         setattr(note, 'title', request.json.get('title'))
         setattr(note, 'content', request.json.get('content'))
         setattr(note, 'date_edit', datetime.datetime.utcnow())
+        db.session.commit()
+        return jsonify({
+            'message': 'success'
+        })
+    elif request.method == 'DELETE':
+        note = Note.query.get(request.json.get('id'))
+        db.session.delete(note)
         db.session.commit()
         return jsonify({
             'message': 'success'

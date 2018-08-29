@@ -72,7 +72,11 @@ class Note extends Component {
 
   handleRemove = e => {
     e.preventDefault()
-    //REMOVE METHOD
+    axios.delete(`${API_ADDRESS}/notes`, {
+      data: {
+        id: this.state.id
+      }
+    })
   }
 
   render() {
@@ -95,7 +99,7 @@ class Note extends Component {
                     <i>Edit</i>
                   </p>
                 </button>
-                <button className="linkbutton">
+                <button className="linkbutton" onClick={e => this.handleRemove(e)}>
                   <p style={{color: "blue"}}>
                     <i>Remove</i>
                   </p>
