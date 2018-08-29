@@ -27,7 +27,7 @@ class Login extends Component {
     }
 
     this.toggleRememberMe = this.toggleRememberMe.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -41,7 +41,7 @@ class Login extends Component {
     });
   }
 
-  handleChange = e => {
+  handleOnChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -91,7 +91,7 @@ class Login extends Component {
               type="text"
               name="email"
               placeholder="Email"
-              onChange={e => this.handleChange(e)}
+              onChange={e => this.handleOnChange(e)}
             />
           </p>
           <p>
@@ -99,7 +99,7 @@ class Login extends Component {
               type="password"
               name="password"
               placeholder="Password"
-              onChange={e => this.handleChange(e)}
+              onChange={e => this.handleOnChange(e)}
             />
           </p>
           <p>

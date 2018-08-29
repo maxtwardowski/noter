@@ -73,7 +73,7 @@ def login():
     )
 
 @token_required
-@app.route("/notes", methods=['GET', 'POST'])
+@app.route("/notes", methods=['GET', 'POST', 'PATCH'])
 def getnotes():
     if request.method == 'GET':
         notes = User.query.filter_by(email=request.headers.get('user')).first().notes
@@ -81,6 +81,7 @@ def getnotes():
         for note in notes:
             notes_list.append(
                 {
+                    'id': note.id,
                     'title': note.title,
                     'content': note.content,
                     'date_create': note.date_create,
@@ -95,6 +96,15 @@ def getnotes():
             user_id=User.query.filter_by(email=request.json.get('user')).first().get_id()
         )
         db.session.add(newnote)
+        db.session.commit()
+        return jsonify({
+            'message': 'success'
+        })
+    elif request.method == 'PATCH':
+        note = Note.query.get(request.json.get('id'))
+        setattr(note, 'title', request.json.get('title'))
+        setattr(note, 'content', request.json.get('content'))
+        setattr(note, 'date_edit', datetime.datetime.utcnow())
         db.session.commit()
         return jsonify({
             'message': 'success'

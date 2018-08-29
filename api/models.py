@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     date_join = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     authenticated = db.Column(db.Boolean, nullable=False, default=False)
-    notes = db.relationship('Note', backref='author', lazy=True)
+    notes = db.relationship('Note', backref='author')
 
     def __init__(self, email, password):
         self.email = email

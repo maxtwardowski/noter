@@ -38,8 +38,14 @@ class Notebook extends Component {
       <div>
         <ul>
           {this.props.notes.map(note => (
-            <li key={note.title}>
-              <Note note={note} />
+            <li key={note.id}>
+              <Note
+                id={note.id}
+                title={note.title}
+                content={note.content}
+                datecreate={note.date_create}
+                dateedit={note.date_edit}
+              />
             </li>
           ))}
         </ul>
