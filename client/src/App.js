@@ -7,6 +7,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Notebook from './components/Notebook'
 import NoteAdder from './components/NoteAdder'
+import Error from './components/Error'
 import { reject } from './actions'
 
 const mapDispatchToProps = dispatch => ({
@@ -37,6 +38,8 @@ class App extends Component {
                 <Redirect to="/" />
               </div>
             )} />
+
+            <Route component={Error} />
           </Switch>
         </div>
       </BrowserRouter>

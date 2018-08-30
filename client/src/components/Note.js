@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { API_ADDRESS } from '../constant/server'
 import { connect } from 'react-redux'
-import Redirect from 'react-router-dom/Redirect'
+//import Redirect from 'react-router-dom/Redirect'
+import { withRouter } from "react-router-dom";
 
 const mapStateToProps = state => ({
   user: state.user
@@ -53,6 +54,9 @@ class Note extends Component {
       id: this.state.id,
       title: this.state.title_new,
       content: this.state.content_new
+    }).then(() => {
+      this.props.history.push("/");
+      this.props.history.push("/notebook")
     })
     this.setState({
       edited: false,
@@ -86,11 +90,11 @@ class Note extends Component {
   }
 
   render() {
-    if (this.state.changessaved) {
+    /*if (this.state.changessaved) {
       return (
         <Redirect to="/notebook" />
       )
-    }
+    }*/
 
     return(
       <div>
@@ -151,4 +155,6 @@ class Note extends Component {
 
 export default connect(
   mapStateToProps
-)(Note);
+)(
+  withRouter(Note)
+);
