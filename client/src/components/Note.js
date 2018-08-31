@@ -5,8 +5,14 @@ import { connect } from 'react-redux'
 import Redirect from 'react-router-dom/Redirect'
 import { withRouter } from "react-router-dom";
 
+import { getNotes } from '../actions'
+
 const mapStateToProps = state => ({
   user: state.user
+})
+
+const mapDispatchToProps = dispatch => ({
+  getNotes: () => dispatch(getNotes())
 })
 
 class Note extends Component {
@@ -54,7 +60,8 @@ class Note extends Component {
       id: this.state.id,
       title: this.state.title_new,
       content: this.state.content_new
-    }).then(res => {
+    }).then(() => {
+      this.props.getNotes()
       this.setState({
         toNotebook: true
       })
@@ -152,7 +159,8 @@ class Note extends Component {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(
   withRouter(Note)
 );

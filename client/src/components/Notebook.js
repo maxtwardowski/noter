@@ -17,10 +17,6 @@ class Notebook extends Component {
     this.props.getNotes()
   }
 
-  getNotes = () => (
-    this.props.notes
-  )
-
   render() {
     if (this.props.notes === undefined || this.props.notes.length === 0) {
       return (
