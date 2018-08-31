@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { API_ADDRESS } from '../constant/server';
+
 import {
   AUTHENTICATE,
   REJECT,
@@ -22,3 +25,16 @@ export const loadNotes = notes => ({
   type: LOAD_NOTES,
   payload: notes
 });
+
+export const getNotes = () => {
+  return (dispatch, getState) => {
+    axios.get(`${API_ADDRESS}/notes`, {
+      'headers': {
+        'user': getState().user
+      }
+    })
+    .then(res => {
+      dispatch(loadNotes(res.data))
+    })
+  }
+}

@@ -10,7 +10,7 @@ const initialState = {
   auth_error: false,
   signup_error: false,
   user: undefined,
-  notes: [],
+  notes: []
 }
 
 const reducer = (state = initialState, action) => {

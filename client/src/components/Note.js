@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { API_ADDRESS } from '../constant/server'
 import { connect } from 'react-redux'
-//import Redirect from 'react-router-dom/Redirect'
+import Redirect from 'react-router-dom/Redirect'
 import { withRouter } from "react-router-dom";
 
 const mapStateToProps = state => ({
@@ -24,7 +24,7 @@ class Note extends Component {
       edited: false,
       title_new: this.props.title,
       content_new: this.props.content,
-      changessaved: false
+      toNotebook: false
     }
 
     this.handleExpand = this.handleExpand.bind(this)
@@ -54,13 +54,10 @@ class Note extends Component {
       id: this.state.id,
       title: this.state.title_new,
       content: this.state.content_new
-    }).then(() => {
-      this.props.history.push("/");
-      this.props.history.push("/notebook")
-    })
-    this.setState({
-      edited: false,
-      changessaved: true
+    }).then(res => {
+      this.setState({
+        toNotebook: true
+      })
     })
   }
 
@@ -83,19 +80,20 @@ class Note extends Component {
       data: {
         id: this.state.id
       }
+    }).then(() => {
+      this.setState({
+        toNotebook: true
+      })
     })
-    this.setState({
-      changessaved: true
-    })
+
   }
 
   render() {
-    /*if (this.state.changessaved) {
+    if (this.state.toNotebook) {
       return (
         <Redirect to="/notebook" />
       )
-    }*/
-
+    }
     return(
       <div>
         <button className="linkbutton" onClick={e => this.handleExpand(e)}>
