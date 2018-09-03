@@ -9,7 +9,7 @@ from api.models import Note, User
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization').encode('UTF-8')
+        token = request.get('headers').get('Authorization').encode('UTF-8')
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
         try:
@@ -80,7 +80,7 @@ def login():
     )
 
 @app.route("/notes", methods=['GET', 'POST', 'PATCH', 'DELETE'])
-@token_required
+#@token_required
 def getnotes():
     if request.method == 'GET':
         notes = User.query.filter_by(email=request.headers.get('user')).first().notes

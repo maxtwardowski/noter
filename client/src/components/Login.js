@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { authenticate, toggleAuthError } from '../actions';
@@ -59,8 +58,8 @@ class Login extends Component {
       this.setState({
         toNotebook: true
       })
-      //this.props.history.push('/protected')
-    }).catch(() => {
+    }).catch(e => {
+      console.log(e);
       this.props.toggleAuthError()
     });
   }

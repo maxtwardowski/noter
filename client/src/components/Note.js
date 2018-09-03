@@ -59,9 +59,12 @@ class Note extends Component {
   handleSaveChanges = e => {
     e.preventDefault()
     axios.patch(`${API_ADDRESS}/notes`, {
-      id: this.state.id,
-      title: this.state.title_new,
-      content: this.state.content_new
+      'id': this.state.id,
+      'title': this.state.title_new,
+      'content': this.state.content_new,
+      'headers': {
+        'Authorization': localStorage.getItem('token')
+      }
     }).then(() => {
       this.props.getNotes()
       this.setState({

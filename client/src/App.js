@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Home from './components/Home'
 import Navi from './components/Navi'
@@ -9,10 +9,7 @@ import Notebook from './components/Notebook';
 import NoteAdder from './components/NoteAdder';
 import Error from './components/Error';
 import { reject, authenticate } from './actions';
-import { withRouter } from 'react-router-dom';
 import { history } from './history';
-//import axios from 'axios';
-//import { API_ADDRESS } from './constant/server';
 
 const mapStateToProps = state => ({
   authenticated: state.authenticated
@@ -24,19 +21,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class App extends Component {
-  /*componentWillMount() {
-    if (this.props.authenticated) {
-      axios.get(`${API_ADDRESS}/user`, {
-        'headers': {
-          'Authorization': localStorage.getItem('token')
-        }
-      })
-      .then(res => {
-        localStorage.setItem('token', res.data.token);
-        this.props.authenticate(res.data.user);
-      })
-    }
-  }*/
 
   handleLogout = () => {
     localStorage.removeItem('token');
@@ -59,10 +43,8 @@ class App extends Component {
             <Route path="/logout" render={() => (
               <div>
                 {this.handleLogout()}
-
               </div>
             )} />
-
             <Route component={Error} />
           </Switch>
         </div>
