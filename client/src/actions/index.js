@@ -30,6 +30,7 @@ export const getNotes = () => {
   return (dispatch, getState) => {
     axios.get(`${API_ADDRESS}/notes`, {
       'headers': {
+        'Authorization': localStorage.getItem('token'),
         'user': getState().user
       }
     })

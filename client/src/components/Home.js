@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { API_ADDRESS } from '../constant/server';
+//import axios from 'axios';
+//import { API_ADDRESS } from '../constant/server';
 
 class Home extends Component {
 
-  constructor(props) {
+  /*constructor(props) {
     super(props);
 
     this.handleProtected = this.handleProtected.bind(this);
@@ -28,14 +28,16 @@ class Home extends Component {
     }).then(res => {
       console.log(res)
     })
-  }
+  }*/
 
   render() {
     return (
       <div>
         <h2>Meet Noter!</h2>
+        {/*
         <button onClick={e => this.handleProtected(e)}>Protected</button>
         <button onClick={e => this.handleUnprotected(e)}>Unprotected</button>
+        */}
       </div>
     )
   }

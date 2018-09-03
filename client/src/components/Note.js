@@ -86,6 +86,9 @@ class Note extends Component {
   handleRemove = e => {
     e.preventDefault()
     axios.delete(`${API_ADDRESS}/notes`, {
+      'headers': {
+        'Authorization': localStorage.getItem('token')
+      },
       data: {
         id: this.state.id
       }

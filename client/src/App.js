@@ -9,8 +9,10 @@ import Notebook from './components/Notebook';
 import NoteAdder from './components/NoteAdder';
 import Error from './components/Error';
 import { reject, authenticate } from './actions';
-import axios from 'axios';
-import { API_ADDRESS } from './constant/server';
+import { withRouter } from 'react-router-dom';
+import { history } from './history';
+//import axios from 'axios';
+//import { API_ADDRESS } from './constant/server';
 
 const mapStateToProps = state => ({
   authenticated: state.authenticated
@@ -39,6 +41,7 @@ class App extends Component {
   handleLogout = () => {
     localStorage.removeItem('token');
     this.props.reject();
+    history.push('/')
   }
 
   render() {
@@ -56,7 +59,7 @@ class App extends Component {
             <Route path="/logout" render={() => (
               <div>
                 {this.handleLogout()}
-                <Redirect to="/" />
+
               </div>
             )} />
 
