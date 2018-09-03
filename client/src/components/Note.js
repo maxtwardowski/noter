@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { API_ADDRESS } from '../constant/server'
 import { connect } from 'react-redux'
-import Redirect from 'react-router-dom/Redirect'
+//import Redirect from 'react-router-dom/Redirect'
 import { withRouter } from "react-router-dom";
 
 import { getNotes } from '../actions'
@@ -17,10 +17,8 @@ const mapDispatchToProps = dispatch => ({
 
 class Note extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
+  componentWillMount() {
+    this.setState({
       id: this.props.id,
       title: this.props.title,
       content: this.props.content,
@@ -31,7 +29,11 @@ class Note extends Component {
       title_new: this.props.title,
       content_new: this.props.content,
       toNotebook: false
-    }
+    })
+  }
+
+  constructor(props) {
+    super(props)
 
     this.handleExpand = this.handleExpand.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
@@ -96,11 +98,11 @@ class Note extends Component {
   }
 
   render() {
-    if (this.state.toNotebook) {
+    /*if (this.state.toNotebook) {
       return (
         <Redirect to="/notebook" />
       )
-    }
+    }*/
     return(
       <div>
         <button className="linkbutton" onClick={e => this.handleExpand(e)}>

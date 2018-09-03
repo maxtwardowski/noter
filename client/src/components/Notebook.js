@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class Notebook extends Component {
-  componentDidMount = () => {
+  componentDidMount () {
     this.props.getNotes()
   }
 
@@ -21,7 +21,7 @@ class Notebook extends Component {
     if (this.props.notes === undefined || this.props.notes.length === 0) {
       return (
         <div>
-          <h3>You've got no notes yet!</h3>
+          <h3>You don't have any notes yet!</h3>
         </div>
       )
     } else {
