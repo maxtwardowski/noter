@@ -55,7 +55,7 @@ class Login extends Component {
       rememberme: this.state.rememberme,
     }).then(res => {
       localStorage.setItem('token', res.data.token);
-      this.props.authenticate(res.data.user, res.data.notes);
+      this.props.authenticate(res.data.user);
       this.setState({
         toNotebook: true
       })

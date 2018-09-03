@@ -74,8 +74,8 @@ def login():
         }
     )
 
-@token_required
 @app.route("/notes", methods=['GET', 'POST', 'PATCH', 'DELETE'])
+@token_required
 def getnotes():
     if request.method == 'GET':
         notes = User.query.filter_by(email=request.headers.get('user')).first().notes
@@ -118,3 +118,25 @@ def getnotes():
         return jsonify({
             'message': 'success'
         })
+
+@app.route("/user", methods=['GET'])
+@token_required
+def checkuser():
+    if request.method == 'GET':
+        '''token = request.headers.get('Authorization').encode('UTF-8')
+        data = jwt.decode(token, app.config['SECRET_KEY'], algorithm='HS256')
+        print(data)'''
+        return jsonify({'message': 'lol'})
+
+@app.route("/protected", methods=['GET'])
+@token_required
+def protected():
+    return jsonify({
+        'message': 'PROTECTED PATH!'
+    })
+
+@app.route("/unprotected", methods=['GET'])
+def unprotected():
+    return jsonify({
+        'message': 'UNPROTECTED!'
+    })

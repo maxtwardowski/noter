@@ -4,17 +4,30 @@ import { connect } from 'react-redux'
 import Home from './components/Home'
 import Navi from './components/Navi'
 import Login from './components/Login'
-import Signup from './components/Signup'
-import Notebook from './components/Notebook'
-import NoteAdder from './components/NoteAdder'
-import Error from './components/Error'
-import { reject } from './actions'
+import Signup from './components/Signup';
+import Notebook from './components/Notebook';
+import NoteAdder from './components/NoteAdder';
+import Error from './components/Error';
+import { reject } from './actions';
+import axios from 'axios';
+import { API_ADDRESS } from './constant/server';
+
+const mapStateToProps = state => ({
+  authenticated: state.authenticated
+})
 
 const mapDispatchToProps = dispatch => ({
   reject: () => dispatch(reject())
 })
 
 class App extends Component {
+  /*componentWillMount() {
+    //if (this.props.authenticated) {
+      axios.get(`${API_ADDRESS}/user`)
+      .then(res => console.log(res))
+   // }
+  }*/
+
   handleLogout = () => {
     localStorage.removeItem('token');
     this.props.reject();
@@ -47,4 +60,4 @@ class App extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
