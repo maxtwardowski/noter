@@ -8,7 +8,7 @@ import Signup from './components/Signup';
 import Notebook from './components/Notebook';
 import NoteAdder from './components/NoteAdder';
 import Error from './components/Error';
-import { reject } from './actions';
+import { reject, authenticate } from './actions';
 import axios from 'axios';
 import { API_ADDRESS } from './constant/server';
 
@@ -17,15 +17,23 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  authenticate: user => dispatch(authenticate(user)),
   reject: () => dispatch(reject())
 })
 
 class App extends Component {
   /*componentWillMount() {
-    //if (this.props.authenticated) {
-      axios.get(`${API_ADDRESS}/user`)
-      .then(res => console.log(res))
-   // }
+    if (this.props.authenticated) {
+      axios.get(`${API_ADDRESS}/user`, {
+        'headers': {
+          'Authorization': localStorage.getItem('token')
+        }
+      })
+      .then(res => {
+        localStorage.setItem('token', res.data.token);
+        this.props.authenticate(res.data.user);
+      })
+    }
   }*/
 
   handleLogout = () => {

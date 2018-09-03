@@ -19,6 +19,18 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated
 
+def generate_token(user, secret_key):
+    token = jwt.encode(
+            {
+                'user' : user,
+                'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            },
+            secret_key,
+            algorithm='HS256'
+        )
+    return token
+
+
 @app.route("/signup", methods=['POST'])
 def register():
     email = request.json.get('email')
@@ -49,14 +61,7 @@ def login():
     if user is None:
         abort(400)
     if user.check_password(password):
-        token = jwt.encode(
-            {
-                'user' : email,
-                'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
-            },
-            app.config['SECRET_KEY'],
-            algorithm='HS256'
-        )
+        token = generate_token(email, app.config['SECRET_KEY'])
         note_objects = user.notes
         notes = []
         for note in note_objects:
@@ -123,10 +128,12 @@ def getnotes():
 @token_required
 def checkuser():
     if request.method == 'GET':
-        '''token = request.headers.get('Authorization').encode('UTF-8')
-        data = jwt.decode(token, app.config['SECRET_KEY'], algorithm='HS256')
-        print(data)'''
-        return jsonify({'message': 'lol'})
+        data = request.headers.get('Authorization').encode('UTF-8')
+        print(data)
+        return jsonify({
+            #'token': generate_token(, app.config['SECRET_KEY']),
+            'user': 'hjehe'
+        })
 
 @app.route("/protected", methods=['GET'])
 @token_required

@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    authenticate: (user, notes) => dispatch(authenticate(user, notes)),
+    authenticate: user => dispatch(authenticate(user)),
     toggleAuthError: () => dispatch(toggleAuthError())
 })
 
