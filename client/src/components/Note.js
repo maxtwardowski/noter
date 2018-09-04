@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { API_ADDRESS } from '../constant/server'
 import { connect } from 'react-redux'
-//import Redirect from 'react-router-dom/Redirect'
 import { withRouter } from "react-router-dom";
 
 import { getNotes } from '../actions'
@@ -28,7 +27,6 @@ class Note extends Component {
       edited: false,
       title_new: this.props.title,
       content_new: this.props.content,
-      toNotebook: false
     })
   }
 
@@ -67,9 +65,6 @@ class Note extends Component {
       }
     }).then(() => {
       this.props.getNotes()
-      this.setState({
-        toNotebook: true
-      })
     })
   }
 
@@ -95,20 +90,11 @@ class Note extends Component {
       data: {
         id: this.state.id
       }
-    }).then(() => {
-      this.setState({
-        toNotebook: true
-      })
     })
 
   }
 
   render() {
-    /*if (this.state.toNotebook) {
-      return (
-        <Redirect to="/notebook" />
-      )
-    }*/
     return(
       <div>
         <button className="linkbutton" onClick={e => this.handleExpand(e)}>

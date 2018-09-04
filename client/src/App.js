@@ -7,27 +7,10 @@ import Login from './components/Login'
 import Signup from './components/Signup';
 import Notebook from './components/Notebook';
 import NoteAdder from './components/NoteAdder';
+import Logout from './components/Logout';
 import Error from './components/Error';
-import { reject, authenticate } from './actions';
-import { history } from './history';
-
-const mapStateToProps = state => ({
-  authenticated: state.authenticated
-})
-
-const mapDispatchToProps = dispatch => ({
-  authenticate: user => dispatch(authenticate(user)),
-  reject: () => dispatch(reject())
-})
 
 class App extends Component {
-
-  handleLogout = () => {
-    localStorage.removeItem('token');
-    this.props.reject();
-    history.push('/')
-  }
-
   render() {
     return (
       <BrowserRouter>
@@ -40,11 +23,7 @@ class App extends Component {
             <Route path="/signup" component={Signup} />
             <Route path="/notebook" component={Notebook} />
             <Route path="/newnote" component={NoteAdder} />
-            <Route path="/logout" render={() => (
-              <div>
-                {this.handleLogout()}
-              </div>
-            )} />
+            <Route path="/logout" component={Logout} />
             <Route component={Error} />
           </Switch>
         </div>
@@ -53,4 +32,4 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect()(App);
