@@ -13,9 +13,20 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class Notebook extends Component {
-  componentDidMount () {
+
+  componentDidMount() {
     this.props.getNotes()
   }
+
+  /*componentWillReceiveProps(nextProps) {
+    for (var index = 0; index < this.props.notes.length; index++) {
+      if (JSON.stringify(this.props.notes[index].date_edit) !== JSON.stringify(nextProps.notes[index].date_edit)) {
+        console.log("Different!")
+        this.props.getNotes()
+        break;
+      }
+    }
+  }*/
 
   render() {
     if (this.props.notes === undefined || this.props.notes.length === 0) {

@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import { reject } from '../actions'
 
 const mapStateToProps = state => ({
-    authenticated: state.authenticated,
-    user: state.user
+  authenticated: state.authenticated,
+  user: state.user
 })
 
 const mapDispatchToProps = dispatch => ({
-    reject: () => dispatch(reject())
+  reject: () => dispatch(reject())
 })
 
 class Navi extends Component {

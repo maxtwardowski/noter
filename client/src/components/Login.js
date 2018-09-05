@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { authenticate, toggleAuthError } from '../actions';
@@ -11,7 +10,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    authenticate: (user, notes) => dispatch(authenticate(user, notes)),
+    authenticate: user => dispatch(authenticate(user)),
     toggleAuthError: () => dispatch(toggleAuthError())
 })
 
@@ -55,12 +54,12 @@ class Login extends Component {
       rememberme: this.state.rememberme,
     }).then(res => {
       localStorage.setItem('token', res.data.token);
-      this.props.authenticate(res.data.user, res.data.notes);
+      this.props.authenticate(res.data.user);
       this.setState({
         toNotebook: true
       })
-      //this.props.history.push('/protected')
-    }).catch(() => {
+    }).catch(e => {
+      console.log(e);
       this.props.toggleAuthError()
     });
   }

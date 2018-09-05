@@ -9,7 +9,7 @@ from api.models import Note, User
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization').encode('UTF-8')
+        token = request.get('headers').get('Authorization').encode('UTF-8')
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
         try:
@@ -18,6 +18,18 @@ def token_required(f):
             return jsonify({'message' : 'Token is invalid!'}), 403
         return f(*args, **kwargs)
     return decorated
+
+def generate_token(user, secret_key):
+    token = jwt.encode(
+            {
+                'user' : user,
+                'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            },
+            secret_key,
+            algorithm='HS256'
+        )
+    return token
+
 
 @app.route("/signup", methods=['POST'])
 def register():
@@ -49,14 +61,7 @@ def login():
     if user is None:
         abort(400)
     if user.check_password(password):
-        token = jwt.encode(
-            {
-                'user' : email,
-                'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
-            },
-            app.config['SECRET_KEY'],
-            algorithm='HS256'
-        )
+        token = generate_token(email, app.config['SECRET_KEY'])
         note_objects = user.notes
         notes = []
         for note in note_objects:
@@ -74,8 +79,8 @@ def login():
         }
     )
 
-@token_required
 @app.route("/notes", methods=['GET', 'POST', 'PATCH', 'DELETE'])
+#@token_required
 def getnotes():
     if request.method == 'GET':
         notes = User.query.filter_by(email=request.headers.get('user')).first().notes
@@ -118,3 +123,27 @@ def getnotes():
         return jsonify({
             'message': 'success'
         })
+
+@app.route("/user", methods=['GET'])
+@token_required
+def checkuser():
+    if request.method == 'GET':
+        data = request.headers.get('Authorization').encode('UTF-8')
+        print(data)
+        return jsonify({
+            #'token': generate_token(, app.config['SECRET_KEY']),
+            'user': 'hjehe'
+        })
+
+@app.route("/protected", methods=['GET'])
+@token_required
+def protected():
+    return jsonify({
+        'message': 'PROTECTED PATH!'
+    })
+
+@app.route("/unprotected", methods=['GET'])
+def unprotected():
+    return jsonify({
+        'message': 'UNPROTECTED!'
+    })
